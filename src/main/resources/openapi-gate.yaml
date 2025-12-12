@@ -30,6 +30,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StudentGateResponse'
+  /api/students/{id}:
+    get:
+      summary: Получить данные студента из DATA SERVICE
+      description: Проксирует запрос клиента к DATA SERVICE и возвращает найденного студента.
+      operationId: getStudent
+      tags:
+        - studentGate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор студента во внутреннем сервисе
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Студент найден (ответ от DATA SERVICE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentGateResponse'
+        '404':
+          description: Студент не найден
+        '500':
+          description: Внутренняя ошибка
 
 components:
   schemas:

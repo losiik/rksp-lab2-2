@@ -1,5 +1,6 @@
 package ru.rksp.klosep.gate.controller;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,22 @@ public class StudentGateController implements StudentGateApi {
         gateResponse.setPassport(dataResponse.getPassport());
 
         return ResponseEntity.status(201).body(gateResponse);
+    }
+
+    @Override
+    public ResponseEntity<StudentGateResponse> getStudent(Long id) {
+        try {
+            StudentDataResponse dataResponse = studentsFeignClient.getStudentDataByIdFromData(id);
+
+            StudentGateResponse gateResponse = new StudentGateResponse();
+            gateResponse.setId(dataResponse.getId());
+            gateResponse.setFullName(dataResponse.getFullName());
+            gateResponse.setPassport(dataResponse.getPassport());
+
+            return ResponseEntity.ok(gateResponse);
+        } catch (FeignException.NotFound ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

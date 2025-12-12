@@ -1,0 +1,5 @@
+.swagger-ui .opblock-summary-path,
+.swagger-ui .opblock-summary-path span {
+    white-space: nowrap !important;
+    word-break: normal !important;
+}
